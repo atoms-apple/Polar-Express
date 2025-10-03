@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polar Express | Naruwat - Single Page App</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles to match the look from the screenshots */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+        }
+        .header-bg {
+            background-color: #000030; /* Very dark blue/black for header */
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .nav-link:hover {
+            color: #4A90E2; /* Blue hover color */
+        }
+        .active-link {
+            border-bottom: 3px solid #4A90E2;
+            color: #4A90E2;
+            padding-bottom: 0.5rem;
+        }
+        .hero-section {
+            background-color: #0033A0; /* Deep Polar Blue */
+            color: white;
+        }
+        .metric-box {
+            border-top: 5px solid #ffaa00; /* Orange line from screenshot */
+            transition: transform 0.3s ease;
+        }
+        .metric-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 51, 160, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Navbar -->
+    <header class="header-bg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo/Branding -->
+                <div class="flex items-center space-x-2">
+                    <span class="text-2xl font-bold tracking-tight">Polar Express |</span>
+                    <div class="text-xs tracking-wider border-l border-white pl-2">
+                        <span class="text-orange-400 font-semibold block">A NWPH Subsidiary</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Links -->
+                <nav class="hidden md:flex space-x-6 text-sm font-medium h-full items-center">
+                    <a href="#/home" class="nav-link route-link transition duration-150 ease-in-out py-2" data-route="home">Home</a>
+                    <div class="group relative inline-block">
+                        <a href="#/nawph" class="nav-link route-link transition duration-150 ease-in-out py-2" data-route="nawph">The NWPH Ecosystem</a>
+                        <!-- Dropdown Content (Mock) -->
+                        <div class="absolute hidden group-hover:block w-48 bg-white text-gray-800 rounded-lg shadow-xl mt-2 py-1 z-50">
+                            <a href="#/corporate" class="route-link block px-4 py-2 hover:bg-gray-100" data-route="corporate">Corporate</a>
+                            <a href="#/operations" class="route-link block px-4 py-2 hover:bg-gray-100" data-route="operations">Operations</a>
+                        </div>
+                    </div>
+                    <a href="#/retail" class="nav-link route-link transition duration-150 ease-in-out py-2" data-route="retail">Retail Store</a>
+                    <a href="#/cafe" class="nav-link route-link transition duration-150 ease-in-out py-2" data-route="cafe">Ulu & Brew Café</a>
+                    <a href="#/impact" class="nav-link route-link transition duration-150 ease-in-out py-2 text-orange-400 font-bold" data-route="impact">Impact</a>
+                    <a href="#/investor" class="nav-link route-link transition duration-150 ease-in-out py-2" data-route="investor">Investor</a>
+                    <a href="#/careers" class="nav-link route-link transition duration-150 ease-in-out py-2" data-route="careers">Careers</a>
+                    <a href="#/contact" class="nav-link route-link transition duration-150 ease-in-out py-2" data-route="contact">Contact</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="app-content" class="min-h-[calc(100vh-4rem)] p-4 sm:p-8">
+        <!-- Content will be injected here by JavaScript routing -->
+    </main>
+
+    <!-- Modal for messages (replaces alert()) -->
+    <div id="message-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-[9999]">
+        <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full">
+            <h3 id="modal-title" class="text-xl font-bold mb-3 text-gray-800"></h3>
+            <p id="modal-message" class="text-gray-600 mb-6"></p>
+            <button onclick="document.getElementById('message-modal').classList.add('hidden')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition duration-150">Close</button>
+        </div>
+    </div>
+
+
+    <script>
+        // Use a custom message box instead of alert()
+        const showMessage = (title, message) => {
+            const modal = document.getElementById('message-modal');
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-message').textContent = message;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        };
+
+        // --- Routing Logic ---
+        const appContent = document.getElementById('app-content');
+        const defaultRoute = 'home';
+
+        // Content for each route
+        const routes = {
+            'home': {
+                title: 'Welcome to Polar Express',
+                content: `
+                    <section class="hero-section text-center py-16 px-4 sm:px-6 lg:px-8 rounded-xl shadow-lg">
+                        <h1 class="text-4xl sm:text-5xl font-extrabold mb-4">Polar Express Stores | Ulu & Brew Café</h1>
+                        <p class="text-xl font-light mb-8">Northern Supply Chain. Community Owned. Price Stabilized.</p>
+                        <div class="space-x-4">
+                            <button class="bg-white text-blue-800 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition duration-300 route-link" data-route="retail">Shop Essentials</button>
+                            <button class="bg-transparent border-2 border-white text-white font-semibold py-3 px-8 rounded-full hover:bg-white hover:text-blue-800 transition duration-300 route-link" data-route="cafe">Visit Ulu & Brew</button>
+                        </div>
+                    </section>
+
+                    <section class="mt-12">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-orange-400 inline-block pb-1">NWPH Group Operational Metrics</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-5 gap-6 text-center">
+                            <div class="metric-box bg-white p-6 rounded-xl shadow-md">
+                                <p class="text-4xl font-bold text-red-600 mb-2">-1.2%</p>
+                                <p class="text-xs uppercase tracking-wider text-gray-500">PRICE STABILITY YTD</p>
+                                <p class="text-sm text-gray-700 mt-1">Decrease in average essential basket price.</p>
+                            </div>
+                            <div class="metric-box bg-white p-6 rounded-xl shadow-md">
+                                <p class="text-4xl font-bold text-green-600 mb-2">92%</p>
+                                <p class="text-xs uppercase tracking-wider text-gray-500">INUIT EMPLOYMENT</p>
+                                <p class="text-sm text-gray-700 mt-1">Targeting 95% by 2027.</p>
+                            </div>
+                            <div class="metric-box bg-white p-6 rounded-xl shadow-md">
+                                <p class="text-4xl font-bold text-blue-600 mb-2">12</p>
+                                <p class="text-xs uppercase tracking-wider text-gray-500">COMMUNITY BRANCHES</p>
+                                <p class="text-sm text-gray-700 mt-1">Currently serving 12 Nunavut communities.</p>
+                            </div>
+                            <div class="metric-box bg-white p-6 rounded-xl shadow-md">
+                                <p class="text-4xl font-bold text-blue-900 mb-2">2,500t</p>
+                                <p class="text-xs uppercase tracking-wider text-gray-500">SEALIFT CARGO TONNAGE</p>
+                                <p class="text-sm text-gray-700 mt-1">Total tonnage delivered by Ima Sealift Q3.</p>
+                            </div>
+                            <div class="metric-box bg-white p-6 rounded-xl shadow-md">
+                                <p class="text-4xl font-bold text-blue-900 mb-2">58,000kg</p>
+                                <p class="text-xs uppercase tracking-wider text-gray-500">AIR CARGO VOLUME (NW A)</p>
+                                <p class="text-sm text-gray-700 mt-1">Urgent/Perishable volume by North Winds Airlines.</p>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section class="mt-12">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-orange-400 inline-block pb-1">Integrated Logistics Status (Ima Sealift & North Winds)</h2>
+                        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                            <div class="bg-blue-100 p-6 rounded-xl shadow-md w-full md:w-1/2">
+                                <h3 class="text-xl font-semibold text-blue-800 mb-2">Ima Sealift Solutions</h3>
+                                <p class="text-gray-700">Providing essential bulk supply transport for the Northern communities. Q4 scheduling is underway.</p>
+                            </div>
+                            <div class="bg-blue-100 p-6 rounded-xl shadow-md w-full md:w-1/2">
+                                <h3 class="text-xl font-semibold text-blue-800 mb-2">North Winds Airlines</h3>
+                                <p class="text-gray-700">Focused on fast, reliable air cargo and emergency supply deliveries across the region.</p>
+                            </div>
+                        </div>
+                    </section>
+                `
+            },
+            'retail': {
+                title: 'Retail Store',
+                content: `
+                    <div class="p-8 bg-white rounded-xl shadow-lg">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4">Polar Express Retail</h2>
+                        <p class="text-lg text-gray-600 mb-6">Our retail operations focus on providing high-quality, essential goods at stabilized prices to support Northern communities.</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li>Local sourcing initiatives.</li>
+                            <li>Weekly fresh produce deliveries via air cargo.</li>
+                            <li>Community feedback loop for inventory management.</li>
+                        </ul>
+                    </div>
+                `
+            },
+            'cafe': {
+                title: 'Ulu & Brew Café',
+                content: `
+                    <div class="p-8 bg-white rounded-xl shadow-lg">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4">Ulu & Brew Café</h2>
+                        <p class="text-lg text-gray-600 mb-6">The Ulu & Brew Café is a community hub, offering fresh, healthy meals and beverages in a warm environment.</p>
+                        <p class="text-blue-600 font-semibold">Specialty: Locally sourced caribou stew and specialty coffee.</p>
+                    </div>
+                `
+            },
+            'impact': {
+                title: 'Impact & Sustainability',
+                content: `
+                    <div class="p-8 bg-white rounded-xl shadow-lg">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4">Community Impact & Sustainability</h2>
+                        <p class="text-lg text-gray-600 mb-6">Our commitment extends beyond commerce. We are dedicated to Inuit employment, food security, and environmental stewardship.</p>
+                        <p class="font-bold text-green-600">Current Goal: Achieve 95% Inuit employment across all operations by 2027.</p>
+                    </div>
+                `
+            },
+            'investor': {
+                title: 'Investor Relations',
+                content: `
+                    <div class="p-8 bg-white rounded-xl shadow-lg">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4">Investor Information</h2>
+                        <p class="text-lg text-gray-600 mb-6">Access our latest financial reports, governance documents, and shareholder information here.</p>
+                        <button class="bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-300" onclick="showMessage('Document Access', 'A PDF viewer would load the Q3 2025 Earnings Report here.')">Download Latest Report</button>
+                    </div>
+                `
+            },
+            'careers': {
+                title: 'Careers',
+                content: `
+                    <div class="p-8 bg-white rounded-xl shadow-lg">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4">Join the Polar Express Team</h2>
+                        <p class="text-lg text-gray-600 mb-6">We are looking for dedicated individuals to help us strengthen the Northern supply chain. Apply today!</p>
+                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                            <li>Logistics Coordinator (Iqaluit)</li>
+                            <li>Retail Supervisor (Pangnirtung)</li>
+                            <li>Pilot / Air Cargo Specialist</li>
+                        </ul>
+                    </div>
+                `
+            },
+            'contact': {
+                title: 'Contact Us',
+                content: `
+                    <div class="p-8 bg-white rounded-xl shadow-lg">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4">Get in Touch</h2>
+                        <p class="text-lg text-gray-600 mb-6">We welcome your feedback and inquiries.</p>
+                        <p class="text-gray-700"><strong>Head Office:</strong> 123 Arctic Way, Iqaluit, Nunavut</p>
+                        <p class="text-gray-700"><strong>Email:</strong> info@polarexpress.nu</p>
+                        <p class="text-gray-700"><strong>Phone:</strong> (867) 555-0199</p>
+                    </div>
+                `
+            },
+            // Fallback for missing routes (like the 404 page you saw)
+            '404': {
+                title: '404 - Page Not Found',
+                content: `
+                    <div class="text-center py-20">
+                        <div class="border-t-4 border-orange-400 max-w-xl mx-auto mb-8"></div>
+                        <h1 class="text-5xl font-extrabold text-red-600 mb-4">404 - Page Not Found</h1>
+                        <p class="text-xl text-gray-700 mb-6">The page could not be found. Please check the navigation links.</p>
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 route-link" data-route="home">Go to Home</button>
+                    </div>
+                `
+            }
+        };
+
+        // Function to render the correct page content
+        const renderRoute = () => {
+            // Get the current hash from the URL, removing the leading '#/'
+            let path = window.location.hash.slice(2).toLowerCase(); 
+
+            // If the path is empty or just '/', default to 'home'
+            if (!path) {
+                path = defaultRoute;
+            }
+
+            // Select the content based on the path, or use 404 if path is invalid
+            const route = routes[path] || routes['404'];
+
+            // Update the main content area
+            appContent.innerHTML = route.content;
+
+            // Update the active state of the navigation links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active-link');
+            });
+            const activeLink = document.querySelector(`.route-link[data-route="${path}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active-link');
+            }
+            
+            // Re-attach click listeners to buttons/links in the new content (like "Go to Home" button)
+            attachRouteListeners();
+            
+            // Set the document title
+            document.title = "Polar Express | " + route.title;
+        };
+
+        // Function to attach click listeners for navigation
+        const attachRouteListeners = () => {
+            document.querySelectorAll('.route-link').forEach(link => {
+                link.removeEventListener('click', handleRouteClick); // Remove existing to prevent duplication
+                link.addEventListener('click', handleRouteClick);
+            });
+        };
+
+        // Handler for route links
+        const handleRouteClick = (event) => {
+            const targetRoute = event.currentTarget.getAttribute('data-route');
+            if (targetRoute) {
+                // Manually set the hash, which triggers the 'hashchange' event
+                window.location.hash = '/' + targetRoute;
+                event.preventDefault(); // Prevent default link behavior
+            }
+        };
+
+        // Listen for changes in the URL hash (when a link is clicked or browser history navigation occurs)
+        window.addEventListener('hashchange', renderRoute);
+
+        // Render the initial route when the page loads
+        window.addEventListener('load', () => {
+            renderRoute();
+            attachRouteListeners();
+        });
+    </script>
+</body>
+</html>
